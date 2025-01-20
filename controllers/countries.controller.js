@@ -19,6 +19,20 @@ const getPagingData = (data, page, limit) => {
   return { totalItems, trashDatas, totalPages, currentPage };
 };
 
+exports.allCountry = (req, res) => {
+  Countries.findAll({
+    attributes: ['country_name', 'country_code']
+  }).then(data => {
+    res.send(data)
+  })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving countries."
+      });
+    });
+}
+
 exports.allCountriesPaging = (req, res) => {
   const { page, size } = req.query;
 
@@ -36,7 +50,7 @@ exports.allCountriesPaging = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving trashdatas."
+          err.message || "Some error occurred while retrieving countries."
       });
     });
 }
@@ -45,10 +59,10 @@ exports.countriesLike = (req, res) => {
   const { substring } = req.query;
 
   Countries.findAll({
-    where:{
+    where: {
       country_name: {
         [Op.like]: '%' + substring + '%',
-      }      
+      }
     }
   }).then(data => {
     res.send(data)

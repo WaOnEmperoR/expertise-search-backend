@@ -44,7 +44,6 @@ app.use('/request-type', (req, res, next) => {
 app.post('/api/addOrUpdateCountry', function (req, res, next) {
   var countryName = req.body.country_name
   var countryCode = req.body.country_code
-  // var trashBinLocation = req.body.trash_bin_location
 
   Countries.findOne({
     where: { country_code: countryCode }
@@ -59,7 +58,7 @@ app.post('/api/addOrUpdateCountry', function (req, res, next) {
         }, {
         where: { id: obj.dataValues.id }
       }).then(resUpdate => {
-        console.log("update success")
+        console.log("update country success")
         res.send(resUpdate)
       })
     }
@@ -68,13 +67,15 @@ app.post('/api/addOrUpdateCountry', function (req, res, next) {
         country_name: countryName,
         country_code: countryCode
       }).then(resInsert => {
-        console.log("insert success")
+        console.log("insert country success")
         res.send(resInsert)
       })
     }
   })
 
 })
+
+app.get("/api/countries/all", controller_countries.allCountry)
 
 app.get("/api/countries/allpaging", controller_countries.allCountriesPaging)
 
